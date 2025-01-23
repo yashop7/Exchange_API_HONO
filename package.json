@@ -1,0 +1,27 @@
+{
+  "name": "api",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build ./src/index.ts --target=bun --outdir=dist",
+    "deploy": "wrangler pages deploy dist/"
+    },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "@types/bun": "latest",
+    "bun-types": "^1.1.44",
+    "wrangler": "^3.103.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/pg": "^8.11.10",
+    "@types/redis": "^4.0.11",
+    "hono": "^4.6.16",
+    "pg": "^8.13.1",
+    "redis": "^4.7.0",
+    "serve": "^14.2.4"
+  }
+}
