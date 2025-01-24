@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "build": "bun build ./src/index.ts --target=bun --outdir=dist",
-    "deploy": "wrangler pages deploy dist/"
-    },
+    "build": "bun build src/index.ts --target=bun --outdir dist",
+    "deploy": "wrangler deploy"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250109.0",
     "@types/bun": "latest",

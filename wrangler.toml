@@ -1,11 +1,27 @@
 name = "exchange-api-hono"
-compatibility_date = "2024-01-17"
+main = "./src/index.ts" # Points to the built output file
+compatibility_date = "2024-12-18"  # Use the latest supported date
 compatibility_flags = ["nodejs_compat"]
 
+# Account configuration
+account_id = "e57fad9da3e3be30a89ccf18eb1669ce"
+workers_dev = true
+
+# Build process
 [build]
-command = "bun install && bun run build"
+command = "bun run build"
+cwd = "."
 
-[build.upload]
-format = "modules"
+# Environment variables
+[vars]
+NODE_ENV = "production"
 
-main = "./dist/index.js"
+[env.production]
+vars = { NODE_ENV = "production" }
+
+# Enable compatibility with Node.js APIs
+
+# # Customize the development server
+# [dev]
+# port = 3003
+

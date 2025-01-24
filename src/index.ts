@@ -1,23 +1,27 @@
-import { Hono } from 'hono'
-import { cors } from 'hono/cors'
-import { orderRouter } from './routes/order'
-import { depthRouter } from './routes/depth'
-import { tradesRouter } from './routes/trades'
-import { klineRouter } from './routes/kline'
-import { tickersRouter } from './routes/ticker'
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { orderRouter } from './routes/order';
+import { depthRouter } from './routes/depth';
+import { tradesRouter } from './routes/trades';
+import { klineRouter } from './routes/kline';
+import { tickersRouter } from './routes/ticker';
 
-const app = new Hono()
+const app = new Hono();
 
-app.use('*', cors())
+// Use CORS middleware
+app.use('*', cors());
 
-app.route('/api/v1/order', orderRouter)
-app.route('/api/v1/depth', depthRouter)
-app.route('/api/v1/trades', tradesRouter)
-app.route('/api/v1/klines', klineRouter)
-app.route('/api/v1/tickers', tickersRouter)
+// Define routes
+app.route('/api/v1/order', orderRouter);
+app.route('/api/v1/depth', depthRouter);
+app.route('/api/v1/trades', tradesRouter);
+app.route('/api/v1/klines', klineRouter);
+app.route('/api/v1/tickers', tickersRouter);
 
-app.get('/as', (c) => c.text('Hello World'))
+// Simple test route
+app.get('/as', (c) => c.text('Hello World'));
 
+// Export fetch handler for Cloudflare Workers
 export default {
   fetch: app.fetch
-}
+};
