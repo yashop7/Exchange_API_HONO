@@ -2,14 +2,16 @@ import { Client } from 'pg';
 import { Hono } from 'hono';
 import { RedisManager } from "../RedisManager";
 
+const dbUrl = process.env.DATABASE_URL;
 const pgClient = new Client({
-    user: "your_user",
-    host: "localhost",
-    database: "my_database",
-    password: "your_password",
-    port: 5433,
-});
-pgClient.connect();
+    connectionString: dbUrl, // Railway's full connection URL
+    ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false, // Required for Railway
+  });
+  
+  pgClient
+    .connect()
+    .then(() => console.log("🚀 Connected to Railway PostgreSQL!"))
+    .catch((err) => console.error("❌ Connection error", err));
 
 export const klineRouter = new Hono();
 

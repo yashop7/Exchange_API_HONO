@@ -10,9 +10,25 @@ export class RedisManager {
     private static instance: RedisManager;
 
     private constructor() {
-        this.client = createClient(); // Api Server is Subsribed to the Queue
+        const redisUrl = process.env.UPSTASH_REDIS_REST_URL; // Your Upstash Redis URL
+        const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN; // Your Upstash Redis token
+
+        if (!redisUrl || !redisToken) {
+            throw new Error("Redis URL and token must be provided in environment variables.");
+        }
+
+
+        this.client = createClient({
+            url: redisUrl,
+            password: redisToken
+        });
+
+        this.publisher = createClient({
+            url: redisUrl,
+            password: redisToken
+        });
+
         this.client.connect();
-        this.publisher = createClient(); // Api server will get the response via PubSub 
         this.publisher.connect();
     }
 
@@ -24,9 +40,12 @@ export class RedisManager {
     }
 
     public sendAndAwait(message: MessageToEngine) {
+        console.log("message: ", message.data);
+
         return new Promise<MessageFromOrderbook>((resolve) => { 
             //This Resolve is a Function which is called when we want something that promise need to return
             const id = this.getRandomClientId();
+            console.log("id: ", id);
             this.client.subscribe(id, (message: string) => { //Before adding to the Queue, It is Subscribing the User to the PubSub
                 this.client.unsubscribe(id); // When we get the Message from the PubSub then we UnSubscribes from the PubSub
                 resolve(JSON.parse(message)); // message received will be returned to the user

@@ -19,7 +19,11 @@ app.route('/api/v1/klines', klineRouter);
 app.route('/api/v1/tickers', tickersRouter);
 
 // Simple test route
-app.get('/as', (c) => c.text('Hello World'));
+app.get('/as', (c) => {
+  console.log("Hello World")
+  return c.text('Hello World 2')
+}
+);
 
 // Export fetch handler for Cloudflare Workers
 export default {

@@ -5,20 +5,28 @@ import { CREATE_ORDER, CANCEL_ORDER, ON_RAMP, GET_OPEN_ORDERS } from "../types";
 const orderRouter = new Hono();
 
 orderRouter.post("/", async (c) => {
-  const { market, price, quantity, side, userId } = await c.req.json();
-  console.log("req.body: ", { market, price, quantity, side, userId });
+  try {
+    const { market, price, quantity, side, userId } = await c.req.json();
+    console.log("Hello this is my request");
+    console.log("price: ", price);
+    console.log("market: ", market);
 
-  const response = await RedisManager.getInstance().sendAndAwait({
-    type: CREATE_ORDER,
-    data: {
-      market,
-      price,
-      quantity,
-      side,
-      userId,
-    },
-  });
-  return c.json(response.payload);
+    const response = await RedisManager.getInstance().sendAndAwait({
+      type: CREATE_ORDER,
+      data: {
+        market,
+        price,
+        quantity,
+        side,
+        userId,
+      },
+    });
+    console.log("response.payload: ", response.payload || "No response");
+    return c.json(response.payload);
+  } catch (e) {
+    console.log("Error: ", e);
+    return c.json({ error: "An error occurred" }, 500);
+  }
 });
 
 orderRouter.delete("/", async (c) => {

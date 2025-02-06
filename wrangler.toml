@@ -16,6 +16,11 @@ cwd = "."
 [vars]
 NODE_ENV = "production"
 
+# wrangler.toml (wrangler v3.88.0^)
+[observability.logs]
+enabled = true
+
+
 [env.production]
 vars = { NODE_ENV = "production" }
 
@@ -24,4 +29,3 @@ vars = { NODE_ENV = "production" }
 # # Customize the development server
 # [dev]
 # port = 3003
-
